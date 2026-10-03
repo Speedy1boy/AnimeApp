@@ -3,7 +3,7 @@ package com.krivykh.animeapp.presentation.anime_details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.krivykh.animeapp.data.repository.MockAnimeRepository
+import com.krivykh.animeapp.di.AppModule
 import com.krivykh.animeapp.domain.model.Anime
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ class AnimeDetailsViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val repository = MockAnimeRepository()
+    private val getAnimeDetailsUseCase = AppModule.getAnimeDetailsUseCase
     private val animeId: String = checkNotNull(savedStateHandle["animeId"])
 
     private val _uiState = MutableStateFlow(AnimeDetailsUiState())
@@ -36,7 +36,7 @@ class AnimeDetailsViewModel(
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
             runCatching {
-                repository.getAnimeById(animeId)
+                getAnimeDetailsUseCase(animeId)
             }.onSuccess { result ->
                 _uiState.update { it.copy(isLoading = false, anime = result) }
             }.onFailure { error ->
