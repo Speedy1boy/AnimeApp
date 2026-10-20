@@ -23,15 +23,21 @@ class AnimeListViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(AnimeListUiState())
     val uiState: StateFlow<AnimeListUiState> = _uiState.asStateFlow()
 
+    private val dataStore = AppModule.filterDataStore
+
     init {
-        loadAnime()
+        viewModelScope.launch {
+            dataStore.filterSettingsFlow.collect { settings ->
+                loadAnime(settings.searchQuery, settings.status)
+            }
+        }
     }
 
-    private fun loadAnime() {
+    private fun loadAnime(searchQuery: String, status: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            getAnimeListUseCase()
+            getAnimeListUseCase(searchQuery, status)
                 .catch { error ->
                     _uiState.update { it.copy(isLoading = false, errorMessage = error.message) }
                 }

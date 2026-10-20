@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 class GetAnimeListUseCase(
     private val repository: AnimeRepository
 ) {
-    operator fun invoke(): Flow<List<Anime>> {
-        return repository.getAnimeList()
+    operator fun invoke(searchQuery: String, status: String): Flow<List<Anime>> {
+        return repository.getAnimeList(searchQuery, status)
     }
 }
 

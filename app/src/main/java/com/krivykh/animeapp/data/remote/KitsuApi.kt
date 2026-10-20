@@ -9,7 +9,8 @@ import retrofit2.http.Query
 interface KitsuApi {
     @GET("anime")
     suspend fun getAnimeList(
-        @Query("page[limit]") limit: Int = 20
+        @Query("page[limit]") limit: Int = 20,
+        @Query("filter[text]") searchQuery: String? = null
     ): AnimeListResponseDto
 
     @GET("anime/{id}")
