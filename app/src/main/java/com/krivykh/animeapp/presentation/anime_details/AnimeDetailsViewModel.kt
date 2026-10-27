@@ -11,11 +11,29 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+data class AnimeDetailsUiModel(
+    val title: String,
+    val posterImageUrl: String,
+    val synopsis: String,
+    val statusText: String,
+    val infoText: String
+)
+
 data class AnimeDetailsUiState(
     val isLoading: Boolean = true,
-    val anime: Anime? = null,
+    val animeDetails: AnimeDetailsUiModel? = null,
     val errorMessage: String? = null
 )
+
+private fun Anime.toUiModel(): AnimeDetailsUiModel {
+    return AnimeDetailsUiModel(
+        title = this.title,
+        posterImageUrl = this.posterImageUrl,
+        synopsis = this.synopsis,
+        statusText = "Status: ${this.status}",
+        infoText = "Episodes: ${this.episodeCount} | Rating: ${this.averageRating}"
+    )
+}
 
 class AnimeDetailsViewModel(
     savedStateHandle: SavedStateHandle
@@ -38,7 +56,7 @@ class AnimeDetailsViewModel(
             runCatching {
                 repository.getAnimeById(animeId)
             }.onSuccess { result ->
-                _uiState.update { it.copy(isLoading = false, anime = result) }
+                _uiState.update { it.copy(isLoading = false, animeDetails = result.toUiModel()) }
             }.onFailure { error ->
                 _uiState.update { it.copy(isLoading = false, errorMessage = error.message) }
             }
