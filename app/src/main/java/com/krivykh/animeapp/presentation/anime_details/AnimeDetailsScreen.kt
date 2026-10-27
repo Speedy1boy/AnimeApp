@@ -21,7 +21,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.krivykh.animeapp.domain.model.Anime
 
 @Composable
 fun AnimeDetailsScreen(
@@ -43,15 +42,15 @@ fun AnimeDetailsScreen(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-            uiState.anime != null -> {
-                AnimeDetailsContent(anime = uiState.anime!!)
+            uiState.animeDetails != null -> {
+                AnimeDetailsContent(animeDetails = uiState.animeDetails!!)
             }
         }
     }
 }
 
 @Composable
-fun AnimeDetailsContent(anime: Anime) {
+fun AnimeDetailsContent(animeDetails: AnimeDetailsUiModel) {
     val scrollState = rememberScrollState()
 
     ConstraintLayout(
@@ -63,8 +62,8 @@ fun AnimeDetailsContent(anime: Anime) {
         val (poster, title, status, synopsisLabel, synopsis, info) = createRefs()
 
         AsyncImage(
-            model = anime.posterImageUrl,
-            contentDescription = anime.title,
+            model = animeDetails.posterImageUrl,
+            contentDescription = animeDetails.title,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .width(140.dp)
@@ -76,7 +75,7 @@ fun AnimeDetailsContent(anime: Anime) {
         )
 
         Text(
-            text = anime.title,
+            text = animeDetails.title,
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.constrainAs(title) {
                 top.linkTo(poster.top)
@@ -87,7 +86,7 @@ fun AnimeDetailsContent(anime: Anime) {
         )
 
         Text(
-            text = "Status: ${anime.status}",
+            text = animeDetails.statusText,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.constrainAs(status) {
                 top.linkTo(title.bottom, margin = 8.dp)
@@ -105,7 +104,7 @@ fun AnimeDetailsContent(anime: Anime) {
         )
 
         Text(
-            text = anime.synopsis,
+            text = animeDetails.synopsis,
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.constrainAs(synopsis) {
                 top.linkTo(synopsisLabel.bottom, margin = 8.dp)
@@ -116,7 +115,7 @@ fun AnimeDetailsContent(anime: Anime) {
         )
 
         Text(
-            text = "Episodes: ${anime.episodeCount} | Rating: ${anime.averageRating}",
+            text = animeDetails.infoText,
             style = MaterialTheme.typography.labelLarge,
             modifier = Modifier.constrainAs(info) {
                 top.linkTo(synopsis.bottom, margin = 24.dp)
