@@ -1,12 +1,19 @@
 package com.krivykh.animeapp.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -15,32 +22,53 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.krivykh.animeapp.di.AppModule
 import com.krivykh.animeapp.presentation.anime_details.AnimeDetailsScreen
 import com.krivykh.animeapp.presentation.anime_list.AnimeListScreen
+import com.krivykh.animeapp.presentation.favorites.FavoritesScreen
+import com.krivykh.animeapp.presentation.settings.SettingsScreen
+import androidx.compose.material.icons.filled.Person
+import com.krivykh.animeapp.presentation.profile.EditProfileScreen
+import com.krivykh.animeapp.presentation.profile.ProfileScreen
 
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+    val isBadgeVisible by AppModule.filterBadgeCache.isBadgeVisible.collectAsState()
 
     val bottomNavItems = listOf(
-        BottomNavItem.AnimeList,
-        BottomNavItem.Settings
+        BottomNavItem(Screen.AnimeList, "Аниме", Icons.AutoMirrored.Filled.List),
+        BottomNavItem(Screen.Favorites, "Избранное", Icons.Default.Favorite),
+        BottomNavItem(Screen.Profile, "Профиль", Icons.Default.Person),
+        BottomNavItem(Screen.Settings, "Настройки", Icons.Default.Settings)
     )
 
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
-
             val showBottomBar = bottomNavItems.any { it.screen.route == currentDestination?.route }
 
             if (showBottomBar) {
                 NavigationBar {
                     bottomNavItems.forEach { item ->
                         NavigationBarItem(
-                            icon = { Icon(item.icon, contentDescription = item.title) },
+                            icon = {
+                                if (item.screen == Screen.Settings && isBadgeVisible) {
+                                    BadgedBox(badge = { Badge() }) {
+                                        Icon(
+                                            item.icon,
+                                            contentDescription = item.title
+                                        )
+                                    }
+                                } else {
+                                    Icon(item.icon, contentDescription = item.title)
+                                }
+                            },
                             label = { Text(item.title) },
-                            selected = currentDestination?.hierarchy?.any { it.route == item.screen.route } == true,
+                            selected = currentDestination?.hierarchy?.any {
+                                it.route == item.screen.route
+                            } == true,
                             onClick = {
                                 navController.navigate(item.screen.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -63,18 +91,33 @@ fun MainScreen() {
         ) {
             composable(Screen.AnimeList.route) {
                 AnimeListScreen(
-                    onAnimeClick = { animeId ->
-                        navController.navigate(Screen.Details.createRoute(animeId))
+                    onAnimeClick = {
+                        navController.navigate(Screen.Details.createRoute(it))
                     }
                 )
             }
-
-            composable(Screen.Settings.route) {
-                Text(text = "Экран настроек")
+            composable(Screen.Favorites.route) {
+                FavoritesScreen(
+                    onAnimeClick = {
+                        navController.navigate(Screen.Details.createRoute(it))
+                    }
+                )
             }
-
+            composable(Screen.Settings.route) {
+                SettingsScreen()
+            }
             composable(Screen.Details.route) {
-                AnimeDetailsScreen()
+                AnimeDetailsScreen(onBackClick = { navController.popBackStack() })
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onEditClick = { navController.navigate(Screen.EditProfile.route) }
+                )
+            }
+            composable(Screen.EditProfile.route) {
+                EditProfileScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
             }
         }
     }
