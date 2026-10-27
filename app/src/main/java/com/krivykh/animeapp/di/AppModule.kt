@@ -5,6 +5,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.krivykh.animeapp.KitsuApp
 import com.krivykh.animeapp.data.local.FilterBadgeCache
 import com.krivykh.animeapp.data.local.FilterDataStore
+import com.krivykh.animeapp.data.local.ProfileDataStore
 import com.krivykh.animeapp.data.local.room.AppDatabase
 import com.krivykh.animeapp.data.remote.KitsuApi
 import com.krivykh.animeapp.data.repository.AnimeRepositoryImpl
@@ -16,7 +17,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object AppModule {
-
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
             .addInterceptor(ChuckerInterceptor(KitsuApp.appContext))
@@ -61,5 +61,9 @@ object AppModule {
 
     val getAnimeDetailsUseCase by lazy {
         GetAnimeDetailsUseCase(repository)
+    }
+
+    val profileDataStore by lazy {
+        ProfileDataStore(KitsuApp.appContext)
     }
 }

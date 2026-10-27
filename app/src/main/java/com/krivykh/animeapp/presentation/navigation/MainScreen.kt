@@ -2,8 +2,8 @@ package com.krivykh.animeapp.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -27,6 +27,9 @@ import com.krivykh.animeapp.presentation.anime_details.AnimeDetailsScreen
 import com.krivykh.animeapp.presentation.anime_list.AnimeListScreen
 import com.krivykh.animeapp.presentation.favorites.FavoritesScreen
 import com.krivykh.animeapp.presentation.settings.SettingsScreen
+import androidx.compose.material.icons.filled.Person
+import com.krivykh.animeapp.presentation.profile.EditProfileScreen
+import com.krivykh.animeapp.presentation.profile.ProfileScreen
 
 @Composable
 fun MainScreen() {
@@ -34,8 +37,9 @@ fun MainScreen() {
     val isBadgeVisible by AppModule.filterBadgeCache.isBadgeVisible.collectAsState()
 
     val bottomNavItems = listOf(
-        BottomNavItem(Screen.AnimeList, "Аниме", Icons.Default.List),
+        BottomNavItem(Screen.AnimeList, "Аниме", Icons.AutoMirrored.Filled.List),
         BottomNavItem(Screen.Favorites, "Избранное", Icons.Default.Favorite),
+        BottomNavItem(Screen.Profile, "Профиль", Icons.Default.Person),
         BottomNavItem(Screen.Settings, "Настройки", Icons.Default.Settings)
     )
 
@@ -52,14 +56,19 @@ fun MainScreen() {
                             icon = {
                                 if (item.screen == Screen.Settings && isBadgeVisible) {
                                     BadgedBox(badge = { Badge() }) {
-                                        Icon(item.icon, contentDescription = item.title)
+                                        Icon(
+                                            item.icon,
+                                            contentDescription = item.title
+                                        )
                                     }
                                 } else {
                                     Icon(item.icon, contentDescription = item.title)
                                 }
                             },
                             label = { Text(item.title) },
-                            selected = currentDestination?.hierarchy?.any { it.route == item.screen.route } == true,
+                            selected = currentDestination?.hierarchy?.any {
+                                it.route == item.screen.route
+                            } == true,
                             onClick = {
                                 navController.navigate(item.screen.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -81,16 +90,34 @@ fun MainScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.AnimeList.route) {
-                AnimeListScreen(onAnimeClick = { navController.navigate(Screen.Details.createRoute(it)) })
+                AnimeListScreen(
+                    onAnimeClick = {
+                        navController.navigate(Screen.Details.createRoute(it))
+                    }
+                )
             }
             composable(Screen.Favorites.route) {
-                FavoritesScreen(onAnimeClick = { navController.navigate(Screen.Details.createRoute(it)) })
+                FavoritesScreen(
+                    onAnimeClick = {
+                        navController.navigate(Screen.Details.createRoute(it))
+                    }
+                )
             }
             composable(Screen.Settings.route) {
                 SettingsScreen()
             }
             composable(Screen.Details.route) {
                 AnimeDetailsScreen(onBackClick = { navController.popBackStack() })
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onEditClick = { navController.navigate(Screen.EditProfile.route) }
+                )
+            }
+            composable(Screen.EditProfile.route) {
+                EditProfileScreen(
+                    onBackClick = { navController.popBackStack() }
+                )
             }
         }
     }
