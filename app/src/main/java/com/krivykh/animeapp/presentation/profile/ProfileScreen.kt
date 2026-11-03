@@ -99,6 +99,14 @@ fun ProfileScreen(
                 color = Color.Gray
             )
 
+            if (profile.favoriteClassTime.isNotBlank()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = profile.favoriteClassTime,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(
