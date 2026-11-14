@@ -1,0 +1,9 @@
+com.krivykh.animeapp.profile-pngs-0 D:\AndroidStudioProjects\AnimeApp\profile\build\generated\res\pngs\debug
+com.krivykh.animeapp.profile-updated_navigation_xml-1 D:\AndroidStudioProjects\AnimeApp\profile\build\generated\updated_navigation_xml\debug
+com.krivykh.animeapp.profile-mergeDebugResources-2 D:\AndroidStudioProjects\AnimeApp\profile\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+com.krivykh.animeapp.profile-mergeDebugResources-3 D:\AndroidStudioProjects\AnimeApp\profile\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+com.krivykh.animeapp.profile-debug-4 D:\AndroidStudioProjects\AnimeApp\profile\build\intermediates\merged_res\debug\mergeDebugResources
+com.krivykh.animeapp.profile-debug-5 D:\AndroidStudioProjects\AnimeApp\profile\build\intermediates\packaged_res\debug\packageDebugResources
+com.krivykh.animeapp.profile-debug-6 D:\AndroidStudioProjects\AnimeApp\profile\src\debug\res
+com.krivykh.animeapp.profile-main-7 D:\AndroidStudioProjects\AnimeApp\profile\src\main\res
+gradleHome-0 D:\.gradle
