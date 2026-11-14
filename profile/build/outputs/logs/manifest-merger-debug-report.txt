@@ -1,0 +1,24 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:2:1-10:12
+INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:2:1-10:12
+	package
+		INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:4:5-8:19
+receiver#com.krivykh.animeapp.presentation.profile.NotificationReceiver
+ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:5:9-7:40
+	android:exported
+		ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:7:13-37
+	android:name
+		ADDED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml:6:13-90
+uses-sdk
+INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml
+INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\AndroidStudioProjects\AnimeApp\profile\src\main\AndroidManifest.xml

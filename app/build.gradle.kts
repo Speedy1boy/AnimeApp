@@ -67,4 +67,6 @@ dependencies {
     implementation(libs.logging.interceptor)
     debugImplementation(libs.library)
     releaseImplementation(libs.library.no.op)
+    implementation(project(":core"))
+    implementation(project(":profile"))
 }
